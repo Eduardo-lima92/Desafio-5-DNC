@@ -1,10 +1,10 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const conectarBancoDados = require('../middlewares/conectarBD.JS');
+const router = express.Router();
 
 /* GET users listing. */
-router.get('/', function(req, res, next) {
-  console.log("var:", process.env.teste)
-  res.send('respond with a resource 5');
+router.get('/',conectarBancoDados, function(req, res, next) {
+  res.send('respond with a resource 50 var:'+process.env.TEST);
 });
 
 module.exports = router;
