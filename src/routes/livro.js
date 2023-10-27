@@ -23,4 +23,32 @@ router.post('/criar', conectarBancoDados , async function(req, res,) {
 
   });
 
+  router.put('/editar/:id', conectarBancoDados , async function(req, res,) {
+    try{
+      // #swagger.tags = ['Tarefa']
+      let idLivros = req.params.id
+      let {id, titulo, qtdPaginas, codigoISBN, editora} = req.body;
+      
+      const checkLivro = await EsquemaLivro.findOne ({ _id: idLivros});
+      if (!checkLivro){
+        throw new Error("Tarefa não encontrada")
+      }
+
+    const LivroAtualizado = await EsquemaLivro.updateOne({ _id: idLivros}, {id, titulo, qtdPaginas, codigoISBN, editora} )
+    if (LivroAtualizado?.modifiedCount > 0){
+        const dadosLivro = await EsquemaLivro.findOne({_id: idLivros});
+            
+        res.status(200).json({
+            status: "OK",
+            statusMensagem: "Livro atualizado com sucesso !!!.",
+            resposta: dadosLivro
+      })
+    }
+    } catch (error) {
+      return tratarErrosEsperados(res, error);
+      }
+      
+  
+    });
+
 module.exports = router;
