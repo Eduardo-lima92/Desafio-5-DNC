@@ -69,4 +69,27 @@ router.post('/criar', conectarBancoDados , async function(req, res,) {
       
         });
 
+        router.delete('/deletar/:id', conectarBancoDados , async function(req, res,) {
+            try{
+            // #swagger.tags = ['Livros']
+            let idLivros = req.params.id
+
+            const checkLivro = await EsquemaLivro.findOne ({ _id: idLivros});
+            if (!checkLivro){
+            throw new Error("Tarefa não encontrada")
+      }
+              const respostaBD =  await EsquemaLivro.deleteOne();
+          
+              res.status(200).json({
+                status: "OK",
+                statusMensagem: "Livro deletado com sucesso !!!.",
+                resposta: respostaBD
+              })
+            } catch (error) {
+              return tratarErrosEsperados(res, error);
+              }
+              
+          
+            });
+
 module.exports = router;
