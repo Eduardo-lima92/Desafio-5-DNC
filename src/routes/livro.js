@@ -7,7 +7,7 @@ const router = express.Router();
 /* GET users listing. */
 router.post('/criar', conectarBancoDados , async function(req, res,) {
   try{
-    // #swagger.tags = ['Tarefa']
+    // #swagger.tags = ['Livros']
     let {id, titulo, qtdPaginas, codigoISBN, editora} = req.body;
     const respostaBD =  await EsquemaLivro.create({id, titulo, qtdPaginas, codigoISBN, editora});
 
@@ -25,7 +25,7 @@ router.post('/criar', conectarBancoDados , async function(req, res,) {
 
   router.put('/editar/:id', conectarBancoDados , async function(req, res,) {
     try{
-      // #swagger.tags = ['Tarefa']
+      // #swagger.tags = ['Livros']
       let idLivros = req.params.id
       let {id, titulo, qtdPaginas, codigoISBN, editora} = req.body;
       
@@ -50,5 +50,23 @@ router.post('/criar', conectarBancoDados , async function(req, res,) {
       
   
     });
+
+    router.get('/obter', conectarBancoDados , async function(req, res,) {
+        try{
+          // #swagger.tags = ['Livros']
+          // #swagger.description = "Endpoint para obter todas os livros"
+          const respostaBD =  await EsquemaLivro.find();
+      
+          res.status(200).json({
+            status: "OK",
+            statusMensagem: "Livro listadas com sucesso !!!.",
+            resposta: respostaBD
+          })
+        } catch (error) {
+          return tratarErrosEsperados(res, error);
+          }
+          
+      
+        });
 
 module.exports = router;
